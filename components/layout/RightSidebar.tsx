@@ -1,11 +1,61 @@
-export default function RightSidebar() {
+import { fetchCommunities } from "@/lib/actions/community.action";
+import { fetchUsers } from "@/lib/actions/user.action";
+import { currentUser } from "@clerk/nextjs/server";
+import UserCard from "../UserCard";
+
+export default async function RightSidebar() {
+  const user = await currentUser();
+  if (!user) return null;
+
+  const similarMinds = await fetchUsers({
+    userId: user.id,
+    pageSize: 4,
+  });
+
+  const suggestedCOmmunities = await fetchCommunities({ pageSize: 4 });
   return (
-    <section className="sticky right-4 top-[10vh] z-20 flex h-[87vh] border-[1px] border-[#ff9500] rounded-3xl w-fit min-w-[150px] flex-col justify-between gap-10 overflow-auto text-white px-5 pb-6 pt-7 max-lg:hidden">
+    <section className="sticky right-4 top-[10vh] z-20 flex h-[87vh] border-[1px] border-[#ff9500] rounded-3xl w-1/4 min-w-[150px] flex-col justify-between gap-10 overflow-auto text-white px-5 pb-6 pt-7 max-lg:hidden no-scrollbar">
       <div className="flex flex-1 flex-col justify-start">
         <h3 className="text-[#ff9500]">Suggested people</h3>
+        <div className="mt-7 flex w-full flex-col gap-5">
+          {similarMinds.users.length > 0 ? (
+            <>
+              {similarMinds.users.map((person) => (
+                <UserCard
+                  key={person.id}
+                  id={person.id}
+                  name={person.name}
+                  username={person.username}
+                  imgUrl={person.image}
+                  personType="User"
+                />
+              ))}
+            </>
+          ) : (
+            <p className="!text-base-regular text-light-3">No users yet</p>
+          )}
+        </div>
       </div>
-      <div className="flex flex-1 felx-col justify-start">
-        <h3 className="text-[#ff9500]">Suggested Communities</h3>
+      <div className="flex flex-col justify-start flex-1">
+        <h3 className="text-[#ff9500] ">Suggested Communities</h3>
+        <div className="mt-7 flex w-full flex-col gap-5">
+          {suggestedCOmmunities.communities.length > 0 ? (
+            <>
+              {suggestedCOmmunities.communities.map((community) => (
+                <UserCard
+                  key={community.id}
+                  id={community.id}
+                  name={community.name}
+                  username={community.username}
+                  imgUrl={community.image}
+                  personType="Community"
+                />
+              ))}
+            </>
+          ) : (
+            <p className="text-center">No communities yet</p>
+          )}
+        </div>
       </div>
     </section>
   );

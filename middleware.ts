@@ -15,4 +15,5 @@ const isProtectedRoute = createRouteMatcher([
   "/profile(.*)",
   "/home(.*)",
   "/search(.*)",
+  "/post(.*)",
 ]);

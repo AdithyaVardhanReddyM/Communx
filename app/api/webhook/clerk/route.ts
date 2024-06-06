@@ -70,7 +70,6 @@ export const POST = async (request: Request) => {
 
     try {
       // @ts-ignore
-      console.log("hello mf");
       await createCommunity(
         // @ts-ignore
         id,

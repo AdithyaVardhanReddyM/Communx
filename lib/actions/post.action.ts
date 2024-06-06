@@ -42,7 +42,7 @@ export async function createPost({
   if (communityIdObject) {
     // Update Community model
     await Community.findByIdAndUpdate(communityIdObject, {
-      $push: { threads: createdPost._id },
+      $push: { posts: createdPost._id },
     });
   }
 
@@ -89,11 +89,11 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
   return { posts, isNext };
 }
 
-export async function fetchPostById(threadId: string) {
+export async function fetchPostById(postId: string) {
   connectToDB();
 
   try {
-    const thread = await Post.findById(threadId)
+    const post = await Post.findById(postId)
       .populate({
         path: "author",
         model: User,
@@ -125,7 +125,7 @@ export async function fetchPostById(threadId: string) {
       })
       .exec();
 
-    return thread;
+    return post;
   } catch (err) {
     console.error("Error while fetching thread:", err);
     throw new Error("Unable to fetch thread");
@@ -146,7 +146,7 @@ export async function addCommentToPost(
     const originalPost = await Post.findById(postId);
 
     if (!originalPost) {
-      throw new Error("Thread not found");
+      throw new Error("Post not found");
     }
 
     // Create the new comment thread

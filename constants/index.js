@@ -33,7 +33,7 @@ export const profileTabs = [
 ];
 
 export const communityTabs = [
-  { value: "threads", label: "Threads", icon: "/assets/reply.svg" },
-  { value: "members", label: "Members", icon: "/assets/members.svg" },
+  { value: "posts", label: "Posts", icon: "/create-post.svg" },
+  { value: "members", label: "Members", icon: "/communities.svg" },
   { value: "requests", label: "Requests", icon: "/assets/request.svg" },
 ];

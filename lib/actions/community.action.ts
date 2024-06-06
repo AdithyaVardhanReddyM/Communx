@@ -61,7 +61,7 @@ export async function fetchCommunityDetails(id: string) {
         select: "name username image _id id",
       },
     ]);
-
+    console.log(communityDetails.members);
     return communityDetails;
   } catch (error) {
     // Handle any errors
@@ -192,6 +192,8 @@ export async function addMemberToCommunity(
     // Add the community's _id to the communities array in the user
     user.communities.push(community._id);
     await user.save();
+
+    console.log("member added");
 
     return community;
   } catch (error) {
