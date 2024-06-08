@@ -23,6 +23,7 @@ import {
 type EventType =
   | "organization.created"
   | "organizationInvitation.created"
+  | "organizationInvitation.accepted"
   | "organizationMembership.created"
   | "organizationMembership.deleted"
   | "organization.updated"
@@ -79,7 +80,7 @@ export const POST = async (request: Request) => {
         "org bio",
         created_by
       );
-
+      console.log("reached api endpoint of organisation.created");
       return NextResponse.json({ message: "User created" }, { status: 201 });
     } catch (err) {
       console.log(err);
@@ -114,6 +115,30 @@ export const POST = async (request: Request) => {
 
   // Listen organization membership (member invite & accepted) creation
   if (eventType === "organizationMembership.created") {
+    try {
+      // Resource: https://clerk.com/docs/reference/backend-api/tag/Organization-Memberships#operation/CreateOrganizationMembership
+      // Show what evnt?.data sends from above resource
+      const { organization, public_user_data } = evnt?.data;
+      console.log("created", evnt?.data);
+
+      // @ts-ignore
+      await addMemberToCommunity(organization.id, public_user_data.user_id);
+
+      return NextResponse.json(
+        { message: "Invitation accepted" },
+        { status: 201 }
+      );
+    } catch (err) {
+      console.log(err);
+
+      return NextResponse.json(
+        { message: "Internal Server Error" },
+        { status: 500 }
+      );
+    }
+  }
+
+  if (eventType === "organizationInvitation.accepted") {
     try {
       // Resource: https://clerk.com/docs/reference/backend-api/tag/Organization-Memberships#operation/CreateOrganizationMembership
       // Show what evnt?.data sends from above resource

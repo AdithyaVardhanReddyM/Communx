@@ -4,16 +4,15 @@ export const config = {
   matcher: ["/((?!.+.[w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
 
-export default clerkMiddleware((auth, req) => {
-  if (isProtectedRoute(req)) auth().protect();
-});
-
-const isProtectedRoute = createRouteMatcher([
-  "/communities(.*)",
-  "/create-post(.*)",
-  "/create-user(.*)",
-  "/profile(.*)",
-  "/home(.*)",
-  "/search(.*)",
-  "/post(.*)",
+const isPublicRoute = createRouteMatcher([
+  "/sign-in(.*)",
+  "/sign-up(.*)",
+  "/",
+  "/api(.*)",
 ]);
+
+export default clerkMiddleware((auth, request) => {
+  if (!isPublicRoute(request)) {
+    auth().protect();
+  }
+});
