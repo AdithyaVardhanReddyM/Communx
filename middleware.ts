@@ -9,6 +9,7 @@ const isPublicRoute = createRouteMatcher([
   "/sign-up(.*)",
   "/",
   "/api(.*)",
+  "/logo.png",
 ]);
 
 export default clerkMiddleware((auth, request) => {

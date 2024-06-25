@@ -1,3 +1,4 @@
+import SVGComponent from "@/components/Logo";
 import { Boxes } from "@/components/ui/background-boxes";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -10,8 +11,8 @@ export default function Home() {
       <div className="mt-0 flex justify-between p-2 items-center z-30">
         <Link href="/">
           <Image
-            src="/logo.svg"
-            className=" w-[140px] h-[20px]"
+            src={"/logo.png"}
+            className="w-[140px] h-[20px]"
             height={5}
             width={150}
             alt="logo"
